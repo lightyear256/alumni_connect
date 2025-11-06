@@ -5,6 +5,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext'
+import { Eye, EyeClosed } from 'lucide-react';
 
 interface FormData {
     email: string;
@@ -19,6 +20,7 @@ interface FormErrors {
 
 export default function Login() {
     const { checkAuth } = useAuth()
+     const [showPass,setShowPass]=useState(false)
     const router = useRouter();
     const [ loading, setLoading ] = useState(false);
     const [formData, setFormData] = useState<FormData>({
@@ -59,12 +61,13 @@ export default function Login() {
                 ...formData
             };
 
-            const result = await axios.post("localhost:4000/api/auth/login",
+            const result = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`,
                 registrationData
             )
             console.log(result);
             localStorage.setItem('token', result.data.token);
             localStorage.setItem('session-id', result.data.user);
+            localStorage.setItem('name',result.data.name)
             localStorage.setItem('role', result.data.role)
             setFormData({
                 email: '',
@@ -145,15 +148,19 @@ export default function Login() {
 
                 <div className="flex flex-col gap-y-1">
                     <label className="text-sm font-medium text-blue-800">Password *</label>
+                    <div className='relative'>
                     <input
                         placeholder="Enter your password"
-                        type="password"
+                        type={showPass?"text":"password"}
                         value={formData.password}
                         onChange={(e) => handleInputChange('password', e.target.value)}
-                        className={`p-3 outline-none bg-blue-800/20 rounded-md transition-colors focus:bg-blue-800/30 focus:ring-2 focus:ring-blue-500/50 ${errors.password ? 'border border-red-400' : ''
+                        className={`p-3 outline-none w-full bg-blue-800/20 rounded-md transition-colors focus:bg-blue-800/30 focus:ring-2 focus:ring-blue-500/50 ${errors.password ? 'border border-red-400' : ''
                             }`}
                         required
                     />
+                    
+                     {showPass?<Eye className='absolute top-3 right-5' onClick={()=>setShowPass(!showPass)}/>:<EyeClosed className='absolute top-3 right-5' onClick={()=>setShowPass(!showPass)}/>}
+                    </div>
                     {errors.password && <span className="text-red-500 text-xs">{errors.password}</span>}
                 </div>
 

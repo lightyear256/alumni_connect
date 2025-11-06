@@ -4,6 +4,7 @@ import { Button } from '../../components/Button';
 import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { Eye, EyeClosed } from 'lucide-react';
 
 interface FormData {
     email: string;
@@ -35,6 +36,8 @@ interface FormErrors {
 
 export default function Register() {
     const router = useRouter();
+    const [showPass,setShowPass]=useState(false)
+    const [showPassCon,setShowPassCon]=useState(false)
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState<FormData>({
         email: '',
@@ -118,12 +121,18 @@ export default function Register() {
                 password: formData.password,
                 name: formData.name,
                 role: formData.role,
+                batch:formData.batch,
+                linkedin:formData.linkedin,
+                github:formData.github,
+                organisation:formData.organisation,
+                website:formData.website,
+                bio:formData.bio
             };
 
             console.log('Registration data:', registrationData);
 
             const result = await axios.post(
-               "localhost:4000/api/auth/register",
+               `${process.env.NEXT_PUBLIC_API_URL}/api/auth/register`,
                 registrationData
             );
 
@@ -194,7 +203,7 @@ export default function Register() {
     };
 
     return (
-        <div className="flex flex-col gap-y-4 justify-center items-center w-full min-h-screen p-4 bg-gradient-to-br from-blue-50 via-white to-purple-50">
+        <div className=" mt-25 flex flex-col gap-y-4 justify-center items-center w-full min-h-screen p-4 bg-gradient-to-br from-blue-50 via-white to-purple-50">
             <div className='text-3xl font-bold text-blue-700'>Register</div>
             <form onSubmit={handleSubmit} className="flex flex-col gap-y-4 bg-blue-700/10 w-full max-w-md rounded-lg p-6 sm:p-8 shadow-lg">
 
@@ -205,7 +214,7 @@ export default function Register() {
                         type="email"
                         value={formData.email}
                         onChange={(e) => handleInputChange('email', e.target.value)}
-                        className={`p-3 outline-none border rounded-md transition-colors focus:ring-2 focus:ring-blue-500 ${errors.email ? 'border-red-400' : 'border-gray-300'
+                        className={`p-3 outline-none bg-blue-800/20 rounded-md transition-colors focus:bg-blue-800/30 focus:ring-2 focus:ring-blue-500/50 ${errors.email ? 'border border-red-400' : ''
                             }`}
                         required
                     />
@@ -219,7 +228,7 @@ export default function Register() {
                         type="text"
                         value={formData.name}
                         onChange={(e) => handleInputChange('name', e.target.value)}
-                        className={`p-3 outline-none border rounded-md transition-colors focus:ring-2 focus:ring-blue-500 ${errors.name ? 'border-red-400' : 'border-gray-300'
+                        className={`p-3 outline-none bg-blue-800/20 rounded-md transition-colors focus:bg-blue-800/30 focus:ring-2 focus:ring-blue-500/50 ${errors.email ? 'border border-red-400' : ''
                             }`}
                         required
                     />
@@ -228,29 +237,35 @@ export default function Register() {
 
                 <div className="flex flex-col gap-y-1">
                     <label className="text-sm font-medium text-blue-700">Password *</label>
+                    <div className='relative'>
                     <input
                         placeholder="Create a password (min 6 characters)"
-                        type="password"
+                        type={showPass?"text":"password"}
                         value={formData.password}
                         onChange={(e) => handleInputChange('password', e.target.value)}
-                        className={`p-3 outline-none border rounded-md transition-colors focus:ring-2 focus:ring-blue-500 ${errors.password ? 'border-red-400' : 'border-gray-300'
+                        className={`p-3 outline-none w-full bg-blue-800/20 rounded-md transition-colors focus:bg-blue-800/30 focus:ring-2 focus:ring-blue-500/50 ${errors.email ? 'border border-red-400' : ''
                             }`}
                         required
                     />
+                    {showPass?<Eye className='absolute top-3 right-5' onClick={()=>setShowPass(!showPass)}/>:<EyeClosed className='absolute top-3 right-5' onClick={()=>setShowPass(!showPass)}/>}
+                    </div>
                     {errors.password && <span className="text-red-500 text-xs mt-1">{errors.password}</span>}
                 </div>
 
                 <div className="flex flex-col gap-y-1">
                     <label className="text-sm font-medium text-blue-700">Confirm Password *</label>
+                    <div className='relative'>
                     <input
                         placeholder="Confirm your password"
-                        type="password"
+                        type={showPassCon?"text":"password"}
                         value={formData.confirmPassword}
                         onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
-                        className={`p-3 outline-none border rounded-md transition-colors focus:ring-2 focus:ring-blue-500 ${errors.confirmPassword ? 'border-red-400' : 'border-gray-300'
+                        className={`p-3 outline-none w-full bg-blue-800/20 rounded-md transition-colors focus:bg-blue-800/30 focus:ring-2 focus:ring-blue-500/50 ${errors.email ? 'border border-red-400' : ''
                             }`}
                         required
                     />
+                    {showPassCon?<Eye className='absolute top-3 right-5' onClick={()=>setShowPassCon(!showPassCon)}/>:<EyeClosed className='absolute top-3 right-5' onClick={()=>setShowPassCon(!showPassCon)}/>}
+                    </div>
                     {errors.confirmPassword && <span className="text-red-500 text-xs mt-1">{errors.confirmPassword}</span>}
                     {formData.password !== '' && formData.confirmPassword !== '' && formData.password === formData.confirmPassword && (
                         <span className="text-green-500 text-xs mt-1">Passwords match ✓</span>
@@ -263,7 +278,8 @@ export default function Register() {
                         type="text"
                         value={formData.batch}
                         onChange={(e) => handleInputChange('batch', e.target.value)}
-                        className="p-3 outline-none border rounded-md border-gray-300 focus:ring-2 focus:ring-blue-500"
+                        className={`p-3 outline-none bg-blue-800/20 rounded-md transition-colors focus:bg-blue-800/30 focus:ring-2 focus:ring-blue-500/50 ${errors.email ? 'border border-red-400' : ''
+                            }`}
                         placeholder="e.g., 2024, 2025"
                         required
                     />
@@ -273,7 +289,7 @@ export default function Register() {
                     <select
                         value={formData.role}
                         onChange={(e) => handleInputChange('role', e.target.value as Role)}
-                        className={`p-3 outline-none border rounded-md transition-colors focus:ring-2 focus:ring-blue-500  ${errors.role ? 'border-red-400' : 'border-gray-300'
+                        className={`p-3 outline-none  bg-blue-800/20 border rounded-md transition-colors focus:ring-2 focus:ring-blue-500  ${errors.role ? 'border-red-400' : 'border-gray-300'
                             }`}
                         required
                     >
@@ -292,7 +308,8 @@ export default function Register() {
                         type="url"
                         value={formData.linkedin}
                         onChange={(e) => handleInputChange('linkedin', e.target.value)}
-                        className="p-3 mt-1 outline-none border rounded-md border-gray-300 focus:ring-2 focus:ring-blue-500"
+                        className={`p-3 outline-none bg-blue-800/20 rounded-md transition-colors focus:bg-blue-800/30 focus:ring-2 focus:ring-blue-500/50 ${errors.email ? 'border border-red-400' : ''
+                            }`}
                         placeholder="LinkedIn profile link"
                     />
                 </div>
@@ -303,7 +320,8 @@ export default function Register() {
                         type="url"
                         value={formData.github}
                         onChange={(e) => handleInputChange('github', e.target.value)}
-                        className="p-3 mt-1 outline-none border rounded-md border-gray-300 focus:ring-2 focus:ring-blue-500"
+                        className={`p-3 outline-none bg-blue-800/20 rounded-md transition-colors focus:bg-blue-800/30 focus:ring-2 focus:ring-blue-500/50 ${errors.email ? 'border border-red-400' : ''
+                            }`}
                         placeholder="GitHub profile link"
                     />
                 </div>
@@ -314,7 +332,8 @@ export default function Register() {
                         type="url"
                         value={formData.website}
                         onChange={(e) => handleInputChange('website', e.target.value)}
-                        className="p-3 mt-1 outline-none border rounded-md border-gray-300 focus:ring-2 focus:ring-blue-500"
+                        className={`p-3 outline-none bg-blue-800/20 rounded-md transition-colors focus:bg-blue-800/30 focus:ring-2 focus:ring-blue-500/50 ${errors.email ? 'border border-red-400' : ''
+                            }`}
                         placeholder="Portfolio or website"
                     />
                 </div>
@@ -324,7 +343,8 @@ export default function Register() {
                         type="text"
                         value={formData.organisation}
                         onChange={(e) => handleInputChange('organisation', e.target.value)}
-                        className="p-3 mt-1 outline-none border rounded-md border-gray-300 focus:ring-2 focus:ring-blue-500"
+                        className={`p-3 outline-none bg-blue-800/20 rounded-md transition-colors focus:bg-blue-800/30 focus:ring-2 focus:ring-blue-500/50 ${errors.email ? 'border border-red-400' : ''
+                            }`}
                         placeholder="Your company or institute"
                     />
                 </div>
@@ -333,8 +353,8 @@ export default function Register() {
                     <textarea
                         value={formData.bio}
                         onChange={(e) => handleInputChange('bio', e.target.value)}
-                        className="p-3 mt-1 outline-none border rounded-md border-gray-300 focus:ring-2 focus:ring-blue-500"
-                        placeholder="Tell us about yourself"
+                        className={`p-3 outline-none bg-blue-800/20 rounded-md transition-colors focus:bg-blue-800/30 focus:ring-2 focus:ring-blue-500/50 ${errors.email ? 'border border-red-400' : ''
+                            }`}
                         rows={3}
                     />
                 </div>
