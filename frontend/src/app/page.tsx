@@ -9,7 +9,6 @@ export default function Home() {
   const { isAuthenticated, role } = useAuth()
   const router = useRouter()
 
-  // Redirect authenticated users to their dashboard
   useEffect(() => {
     if (isAuthenticated) {
       router.push('/dashboard')
@@ -26,7 +25,6 @@ export default function Home() {
 
   return (
     <div className="relative bg-black w-full h-full overflow-hidde">
-      {/* Particles Background - Full Screen */}
       <div className="absolute inset-0 w-full h-screen">
         <Particles
           particleColors={['#e0f2fe', '#dbeafe', '#bfdbfe']}
@@ -40,9 +38,7 @@ export default function Home() {
         />
       </div>
       
-      {/* Content - Centered on top of particles */}
       <div className="relative pt-45 z-10 w-full h-full flex flex-col items-center justify-center gap-12">
-        {/* Main Heading */}
         <div className="text-center space-y-4">
           <h1 className="text-7xl md:text-9xl font-bold text-white drop-shadow-2xl">
             Alumni <span className="text-blue-500">Connect</span>
@@ -52,7 +48,6 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Call to Action Buttons - Only show if not authenticated */}
         {!isAuthenticated && (
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
             <Button 
@@ -72,7 +67,6 @@ export default function Home() {
           </div>
         )}
 
-        {/* Features Section */}
         {!isAuthenticated && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 px-4 max-w-5xl">
             <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 text-center hover:bg-white/10 transition-all duration-300">

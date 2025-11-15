@@ -33,7 +33,6 @@ interface FormErrors {
     general: string;
 }
 
-// --- SUB-COMPONENTS ---
 
 const GlassInputWrapper = ({ children, hasError }: { children: React.ReactNode; hasError?: boolean }) => (
   <div className={`rounded-2xl border ${hasError ? 'border-red-500/70' : 'border-zinc-700'} bg-zinc-900/50 backdrop-blur-sm transition-colors focus-within:border-violet-400/70 focus-within:bg-violet-500/10`}>
@@ -80,7 +79,6 @@ const sampleTestimonials: Testimonial[] = [
   },
 ];
 
-// --- MAIN COMPONENT ---
 
 export default function Register() {
     const router = useRouter();
@@ -252,7 +250,6 @@ export default function Register() {
 
     return (
         <div className="min-h-screen pt-20 flex flex-col md:flex-row w-full bg-zinc-950 text-zinc-50 overflow-hidden">
-            {/* Left column: register form */}
             <section className="flex-1 flex items-center justify-center p-8 overflow-y-auto">
                 <div className="w-full max-w-md">
                     <div className="flex flex-col gap-6">
@@ -488,7 +485,6 @@ export default function Register() {
                 </div>
             </section>
 
-            {/* Right column: hero image + testimonials */}
             <section className="hidden md:block flex-1 relative p-4">
                 <div
                     className="opacity-0 animate-[slideRight_0.8s_ease-out_0.3s_forwards] absolute inset-4 rounded-3xl bg-cover bg-center"
