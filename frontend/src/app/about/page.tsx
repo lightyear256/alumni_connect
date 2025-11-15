@@ -14,7 +14,6 @@ import SpotlightCard from "../components/SpotlightCard";
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-black text-white pt-24 pb-20 mt-10">
-
       <section className="max-w-5xl mx-auto px-6 text-center mb-20">
         <h1 className="text-4xl md:text-5xl font-bold mb-6">
           About the <span className="text-blue-400">Alumni Network</span>
