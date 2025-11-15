@@ -15,7 +15,6 @@ const NavBar = () => {
   const mouseX = useMotionValue(Infinity)
 
   useEffect(() => {
-    // Set mounted state to prevent animation on initial render
     setIsMounted(true)
     
     const handleScroll = () => {
@@ -33,7 +32,6 @@ const NavBar = () => {
     router.replace("/")
   }
 
-  // Define nav items based on authentication and role
   const getNavItems = () => {
     if (!isAuthenticated) {
       return [
