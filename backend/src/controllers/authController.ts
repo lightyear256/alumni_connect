@@ -1,6 +1,5 @@
 import type { Request, Response } from "express";
 import jwt from "jsonwebtoken"
-import bcrypt from "bcrypt";
 import client from "../prismaClient.js";
 import dotenv from "dotenv";
 
@@ -30,12 +29,11 @@ export const signUp = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Email already registered" });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
     
     await client.user.create({
       data: {
         name,
-        password: hashedPassword,
+        password,
         email,
         batch,
         role,
